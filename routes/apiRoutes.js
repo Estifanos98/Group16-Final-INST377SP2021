@@ -1,14 +1,14 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-console */
 import express from 'express';
 import sequelize from 'sequelize';
 
 import db from '../database/initializeDB.js';
-import db1 from '../database/config.js'
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Welcome to the UMD Dining API!');
+  res.send('Welcome to Group 16 API!');
 });
 
 /// /////////////////////////////////
@@ -25,7 +25,6 @@ router.get('/dining', async (req, res) => {
   }
 });
 
-
 // endpointtv copy
 router.get('/tv_movie', async (req, res) => {
   try {
@@ -39,7 +38,6 @@ router.get('/tv_movie', async (req, res) => {
 });
 
 // endpointtv copy end
-
 
 // endpoint1 copy
 router.get('/studio', async (req, res) => {
@@ -127,7 +125,6 @@ router.post('/dining', async (req, res) => {
 // endpoint3 copy
 
 // endpoint3 copy end
-
 
 router.delete('/dining/:hall_id', async (req, res) => {
   try {
@@ -451,7 +448,7 @@ router.post('/categories', async (req, res) => {
   const catalogueId = (await category.length) + 1;
   try {
     const newCategory = await db.categories.create({
-      catalogue_id: catalogue_Id,
+      catalogue_id: catalogueId,
       genre_id: req.body.genre_id
     });
     res.json(newCategory);
@@ -565,15 +562,15 @@ router.put('/customer', async (req, res) => {
   try {
     await db.customer.update(
       {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      customer_address: req.body.customer_address,
-      customer_city: req.body.customer_city,
-      customer_state: req.body.customer_state,
-      customer_zip: req.body.customer_zip,
-      customer_age: req.body.customer_age,
-      credit_card_num: req.body.credit_card_num,
-      customer_email: req.body.customer_email
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
+        customer_address: req.body.customer_address,
+        customer_city: req.body.customer_city,
+        customer_state: req.body.customer_state,
+        customer_zip: req.body.customer_zip,
+        customer_age: req.body.customer_age,
+        credit_card_num: req.body.credit_card_num,
+        customer_email: req.body.customer_email
       },
       {
         where: {
@@ -587,7 +584,6 @@ router.put('/customer', async (req, res) => {
     res.error('Server error');
   }
 });
-
 
 /// /////////////////////////////////
 /// //// Genre Endpoints//
@@ -666,7 +662,6 @@ router.put('/genre', async (req, res) => {
   }
 });
 
-
 /// /////////////////////////////////
 /// ////Invoices Endpoints//
 /// /////////////////////////////////
@@ -732,10 +727,10 @@ router.put('/invoices', async (req, res) => {
   try {
     await db.invoices.update(
       {
-      customer_id: req.body.customer_id,
-      credit_total: req.body.credit_total,
-      invoice_date: req.body.invoice_date,
-      invoice_total: req.body.invoice_total
+        customer_id: req.body.customer_id,
+        credit_total: req.body.credit_total,
+        invoice_date: req.body.invoice_date,
+        invoice_total: req.body.invoice_total
       },
       {
         where: {
@@ -749,8 +744,6 @@ router.put('/invoices', async (req, res) => {
     res.error('Server error');
   }
 });
-
-
 
 /// /////////////////////////////////
 /// ////Rental_info Endpoints//
@@ -834,6 +827,5 @@ router.put('/rental_info', async (req, res) => {
     res.error('Server error');
   }
 });
-
 
 export default router;
