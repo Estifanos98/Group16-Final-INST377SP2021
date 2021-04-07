@@ -17,7 +17,7 @@ export default (database, DataTypes) => {
           type: DataTypes.STRING
         },
         purchase_date: {
-          type: DataTypes.timestamps
+          type: DataTypes.DATE
         }
       },
       { freezeTableName: true, timestamps: false }

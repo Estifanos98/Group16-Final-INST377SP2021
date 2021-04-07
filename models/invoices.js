@@ -14,7 +14,7 @@ export default (database, DataTypes) => {
           type: DataTypes.DECIMAL
         },
         invoice_date: {
-          type: DataTypes.timestamps
+          type: DataTypes.DATE
         },
         invoice_total: {
           type: DataTypes.DECIMAL
