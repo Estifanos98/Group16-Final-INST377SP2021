@@ -591,4 +591,174 @@ router.put('/genre', async (req, res) => {
   }
 });
 
+
+/// /////////////////////////////////
+/// ////Invoices Endpoints//
+/// /////////////////////////////////
+router.get('/invoices', async (req, res) => {
+  try {
+    const invoice = await db.invoices.findAll();
+    const reply = invoice.length > 0 ? { data: invoice } : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.get('/invoices/:invoice_id', async (req, res) => {
+  try {
+    const inv = await db.invoices.findAll({
+      where: {
+        invoice_id: req.params.invoice_id
+      }
+    });
+
+    res.json(inv);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.post('/invoices', async (req, res) => {
+  const newInv = await db.invoices.findAll();
+  const invoiceId = (await newInv.length) + 1;
+  try {
+    const newInvoice = await db.invoices.create({
+      invoice_id: invoiceId,
+      customer_id: req.body.customer_id,
+      credit_total: req.body.credit_total,
+      invoice_date: req.body.invoice_date,
+      invoice_total: req.body.invoice_total
+    });
+    res.json(newInvoice);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.delete('/invoices/:invoice_id', async (req, res) => {
+  try {
+    await db.invoices.destroy({
+      where: {
+        invoice_id: req.params.invoice_id
+      }
+    });
+    res.send('Successfully Deleted');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.put('/invoices', async (req, res) => {
+  try {
+    await db.invoices.update(
+      {
+      customer_id: req.body.customer_id,
+      credit_total: req.body.credit_total,
+      invoice_date: req.body.invoice_date,
+      invoice_total: req.body.invoice_total
+      },
+      {
+        where: {
+          invoice_id: req.body.invoice_id
+        }
+      }
+    );
+    res.send('Successfully Updated');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+
+
+/// /////////////////////////////////
+/// ////Rental_info Endpoints//
+/// /////////////////////////////////
+router.get('/rental_info', async (req, res) => {
+  try {
+    const rental = await db.rental_info.findAll();
+    const reply = rental.length > 0 ? { data: rental } : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.get('/rental_info/:confirmation_num', async (req, res) => {
+  try {
+    const info = await db.rental_info.findAll({
+      where: {
+        confirmation_num: req.params.confirmation_num
+      }
+    });
+
+    res.json(info);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.post('/rental_info', async (req, res) => {
+  const newRental = await db.rental_info.findAll();
+  const RentalId = (await newRental.length) + 1;
+  try {
+    const newRent = await db.invoices.create({
+      confirmation_num: RentalId,
+      invoice_id: req.body.invoice_id,
+      catalogue_id: req.body.catalogue_id,
+      purchase_type: req.body.purchase_type,
+      purchase_date: req.body.purchase_date
+    });
+    res.json(newRent);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.delete('/rental_info/:confirmation_num', async (req, res) => {
+  try {
+    await db.invoices.destroy({
+      where: {
+        confirmation_num: req.params.confirmation_num
+      }
+    });
+    res.send('Successfully Deleted');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.put('/rental_info', async (req, res) => {
+  try {
+    await db.rental_info.update(
+      {
+        invoice_id: req.body.invoice_id,
+        catalogue_id: req.body.catalogue_id,
+        purchase_type: req.body.purchase_type,
+        purchase_date: req.body.purchase_date
+      },
+      {
+        where: {
+          confirmation_num: req.body.confirmation_num
+        }
+      }
+    );
+    res.send('Successfully Updated');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+
 export default router;
