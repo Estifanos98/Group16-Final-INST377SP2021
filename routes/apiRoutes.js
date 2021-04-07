@@ -295,10 +295,10 @@ router.get('/restrictions/:restriction_id', async (req, res) => {
 /// //////////////////////////////////
 /// ///////Custom SQL Endpoint////////
 /// /////////////////////////////////
-const macrosCustom = 'SELECT `Dining_Hall_Tracker`.`Meals`.`meal_id` AS `meal_id`,`Dining_Hall_Tracker`.`Meals`.`meal_name` AS `meal_name`,`Dining_Hall_Tracker`.`Macros`.`calories` AS `calories`,`Dining_Hall_Tracker`.`Macros`.`carbs` AS `carbs`,`Dining_Hall_Tracker`.`Macros`.`sodium` AS `sodium`,`Dining_Hall_Tracker`.`Macros`.`protein` AS `protein`,`Dining_Hall_Tracker`.`Macros`.`fat` AS `fat`,`Dining_Hall_Tracker`.`Macros`.`cholesterol` AS `cholesterol`FROM(`Dining_Hall_Tracker`.`Meals`JOIN `Dining_Hall_Tracker`.`Macros`)WHERE(`Dining_Hall_Tracker`.`Meals`.`meal_id` = `Dining_Hall_Tracker`.`Macros`.`meal_id`)';
+const yearCustom = 'SELECT * FROM `tv_movie` WHERE `year` > 2000 AND `year` < 2005';
 router.get('/table/data', async (req, res) => {
   try {
-    const result = await db.sequelizeDB.query(macrosCustom, {
+    const result = await db.sequelizeDB.query(yearCustom, {
       type: sequelize.QueryTypes.SELECT
     });
     res.json(result);
@@ -308,20 +308,18 @@ router.get('/table/data', async (req, res) => {
   }
 });
 
-const mealMapCustom = `SELECT hall_name,
-  hall_address,
-  hall_lat,
-  hall_long,
-  meal_name
-FROM
-  Meals m
-INNER JOIN Meals_Locations ml 
-  ON m.meal_id = ml.meal_id
-INNER JOIN Dining_Hall d
-ON d.hall_id = ml.hall_id;`;
+const movieCustom = `SELECT title,
+  year,
+  rating_id AS rating,
+  studio_name,
+  genre_name
+FROM tv_movie
+  JOIN studio USING(studio_id)
+  JOIN categories USING(catalogue_id)
+  JOIN genre USING(genre_id)`;
 router.get('/map/data', async (req, res) => {
   try {
-    const result = await db.sequelizeDB.query(mealMapCustom, {
+    const result = await db.sequelizeDB.query(movieCustom, {
       type: sequelize.QueryTypes.SELECT
     });
     res.json(result);
@@ -409,6 +407,83 @@ router.put('/approved_audience', async (req, res) => {
       {
         where: {
           rating_id: req.body.rating_id
+        }
+      }
+    );
+    res.send('Successfully Updated');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+/// /////////////////////////////////
+/// ////Categories Endpoints/////////
+/// /////////////////////////////////
+router.get('/categories', async (req, res) => {
+  try {
+    const category = await db.categories.findAll();
+    const reply = category.length > 0 ? { data: category } : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.get('/categories/:catalogue_id', async (req, res) => {
+  try {
+    const category = await db.catagories.findAll({
+      where: {
+        catalogue_id: req.params.catalogue_id
+      }
+    });
+
+    res.json(category);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.post('/categories', async (req, res) => {
+  const category = await db.categories.findAll();
+  const catalogueId = (await category.length) + 1;
+  try {
+    const newCategory = await db.categories.create({
+      catalogue_id: catalogue_Id,
+      genre_id: req.body.genre_id
+    });
+    res.json(newCategory);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.delete('/categories/:catalogue_id', async (req, res) => {
+  try {
+    await db.categories.destroy({
+      where: {
+        catalogue_id: req.params.catalogue_id
+      }
+    });
+    res.send('Successfully Deleted');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.put('/categories', async (req, res) => {
+  try {
+    await db.approved_audience.update(
+      {
+        genre_id: req.body.genre_id
+      },
+      {
+        where: {
+          catalogue_id: req.body.catalogue_id
         }
       }
     );
