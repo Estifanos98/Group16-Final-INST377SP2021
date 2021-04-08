@@ -419,4 +419,176 @@ router.put('/approved_audience', async (req, res) => {
   }
 });
 
+/// /////////////////////////////////
+/// //// Customer Endpoints//
+/// /////////////////////////////////
+
+router.get('/customer', async (req, res) => {
+  try {
+    const customer = await db.approved_audience.findAll();
+    const reply = customer.length > 0 ? { data: customer} : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.get('/customer/:customer_id', async (req, res) => {
+  try {
+    const customers = await db.customer.findAll({
+      where: {
+        rating_id: req.params.customer_id
+      }
+    });
+
+    res.json(customers);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.post('/customer', async (req, res) => {
+  const customers = await db.customer.findAll();
+  const customerId = (await customers.length) + 1;
+  try {
+    const newCustomer = await db.customer.create({
+      customer_id: customerId,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      customer_address: req.body.customer_address,
+      customer_city: req.body.customer_city,
+      customer_state: req.body.customer_state,
+      customer_zip: req.body.customer_zip,
+      customer_age: req.body.customer_age,
+      credit_card_num: req.body.credit_card_num,
+      customer_email: req.body.customer_email
+    });
+    res.json(newCustomer);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.delete('/customer/:customer_id', async (req, res) => {
+  try {
+    await db.customer.destroy({
+      where: {
+        customer_id: req.params.customer_id
+      }
+    });
+    res.send('Successfully Deleted');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.put('/customer', async (req, res) => {
+  try {
+    await db.customer.update(
+      {
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      customer_address: req.body.customer_address,
+      customer_city: req.body.customer_city,
+      customer_state: req.body.customer_state,
+      customer_zip: req.body.customer_zip,
+      customer_age: req.body.customer_age,
+      credit_card_num: req.body.credit_card_num,
+      customer_email: req.body.customer_email
+      },
+      {
+        where: {
+          customer_id: req.body.customer_id
+        }
+      }
+    );
+    res.send('Successfully Updated');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+
+/// /////////////////////////////////
+/// //// Genre Endpoints//
+/// /////////////////////////////////
+
+router.get('/genre', async (req, res) => {
+  try {
+    const genre = await db.genre.findAll();
+    const reply = genre.length > 0 ? { data: genre} : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.get('/genre/:genre_id', async (req, res) => {
+  try {
+    const genres = await db.genre.findAll({
+      where: {
+        rating_id: req.params.genre_id
+      }
+    });
+
+    res.json(genres);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+router.post('/genre', async (req, res) => {
+  const genres_ = await db.genre.findAll();
+  const genreId = (await genres_.length) + 1;
+  try {
+    const newGenre = await db.genre.create({
+      genre_id: genreId,
+      genre_name: req.body.genre_name
+    });
+    res.json(newGenre);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.delete('/genre/:genre_id', async (req, res) => {
+  try {
+    await db.genre.destroy({
+      where: {
+        genre_id: req.params.genre_id
+      }
+    });
+    res.send('Successfully Deleted');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+router.put('/genre', async (req, res) => {
+  try {
+    await db.genre.update(
+      {
+        genre_name: req.body.genre_name
+      },
+      {
+        where: {
+          genre_id: req.body.genre_id
+        }
+      }
+    );
+    res.send('Successfully Updated');
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
 export default router;
