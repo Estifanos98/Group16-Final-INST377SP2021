@@ -3,6 +3,7 @@ import express from 'express';
 import sequelize from 'sequelize';
 
 import db from '../database/initializeDB.js';
+import db1 from '../database/config.js'
 
 const router = express.Router();
 
@@ -24,6 +25,35 @@ router.get('/dining', async (req, res) => {
   }
 });
 
+
+// endpointtv copy
+router.get('/tv_movie', async (req, res) => {
+  try {
+    const tv = await db.tv_movie.findAll();
+    const reply = tv.length > 0 ? { data: tv} : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+// endpointtv copy end
+
+
+// endpoint1 copy
+router.get('/studio', async (req, res) => {
+  try {
+    const studio1 = await db.studio.findAll();
+    const reply = studio1.length > 0 ? { data: studio1 } : { message: 'no results found' };
+    res.json(reply);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+// endpoint1 copy end
+
 router.get('/dining/:hall_id', async (req, res) => {
   try {
     const hall = await db.DiningHall.findAll({
@@ -38,6 +68,43 @@ router.get('/dining/:hall_id', async (req, res) => {
     res.error('Server error');
   }
 });
+
+// enpointtv2 copy
+router.get('/tv_movie/:catalogue_id', async (req, res) => {
+  try {
+    const tvm = await db.tv_movie.findAll({
+      where: {
+        catalogue_id: req.params.catalogue_id
+      }
+    });
+
+    res.json(tvm);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+// endpointv2 copy end
+
+// endpoint2 copy
+
+router.get('/studio/:studio_id', async (req, res) => {
+  try {
+    const studio3 = await db.studio.findAll({
+      where: {
+        studio_id: req.params.studio_id
+      }
+    });
+
+    res.json(studio3);
+  } catch (err) {
+    console.error(err);
+    res.error('Server error');
+  }
+});
+
+// endpoint2 copy end
 
 router.post('/dining', async (req, res) => {
   const halls = await db.DiningHall.findAll();
@@ -56,6 +123,11 @@ router.post('/dining', async (req, res) => {
     res.error('Server error');
   }
 });
+
+// endpoint3 copy
+
+// endpoint3 copy end
+
 
 router.delete('/dining/:hall_id', async (req, res) => {
   try {
