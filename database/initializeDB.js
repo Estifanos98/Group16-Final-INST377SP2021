@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import Sequelize from 'sequelize';
 
 import configOptions from './config.js';

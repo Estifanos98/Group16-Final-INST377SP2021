@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 export default (database, DataTypes) => {
     const categories = database.define(
       'categories',
@@ -10,8 +11,8 @@ export default (database, DataTypes) => {
         genre_id: {
           type: DataTypes.INTEGER
         }
-      }
+      },
+      { freezeTableName: true, timestamps: false }
     );
     return categories;
   };
-  

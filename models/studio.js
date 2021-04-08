@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 export default (database, DataTypes) => {
     const studio = database.define(
       'studio',
@@ -15,4 +16,3 @@ export default (database, DataTypes) => {
     );
     return studio;
   };
-  

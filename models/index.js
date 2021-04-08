@@ -1,8 +1,5 @@
-import DietaryRestrictions from './DietaryRestrictions.js';
-import DiningHall from './DiningHall.js';
-import Macros from './Macros.js';
-import Meals from './Meals.js';
-
+/* eslint-disable linebreak-style */
+/* eslint-disable camelcase */
 import approved_audience from './approved_audience.js';
 import categories from './categories.js';
 import customer from './customer.js';
@@ -13,11 +10,6 @@ import studio from './studio.js';
 import tv_movie from './tv_movie.js';
 
 export default {
-  DietaryRestrictions,
-  DiningHall,
-  Macros,
-  Meals,
-
   approved_audience,
   categories,
   customer,

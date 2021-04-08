@@ -1,0 +1,32 @@
+body {
+    background-color: skyblue;
+}
+
+
+
+h1 {
+    position: relative;
+    text-align: center;
+    font-size: 30px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h2{
+    font-size: 15px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    margin: 5px;
+  
+   
+}
+
+div.box {
+    background-color: slategray;
+    position: relative;
+    width: relative;
+    margin: 3%;
+    margin-top: 0%;
+    padding: 5px;
+}

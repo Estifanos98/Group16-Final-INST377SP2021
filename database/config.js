@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 export default {
   development: {
     username: 'student',
