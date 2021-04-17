@@ -1,7 +1,7 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable camelcase */
-export default (database, DataTypes) => {
-  const approved_audience = database.define(
+export default (sequelize, DataTypes) => {
+  const approved_audience = sequelize.define(
     'approved_audience',
     {
       rating_id: {
