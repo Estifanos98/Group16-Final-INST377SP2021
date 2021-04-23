@@ -1,32 +1,17 @@
-body {
-    background-color: skyblue;
+body, html{
+    font: normal 18px/1.5;
+    font-family: 'Raleway', sans-serif;
+    background:rgb(220, 222, 226);
+    color: black;
+    min-width: 960px;
+    color: black;
 }
 
-
-
-h1 {
-    position: relative;
-    text-align: center;
-    font-size: 30px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
+.based_on_text{
+    display: inline-block;
 }
 
-h2{
-    font-size: 15px;
-    font-family:Verdana, Geneva, Tahoma, sans-serif;
-    text-align: center;
-    color: white;
-    font-size: 20px;
-    margin: 5px;
-  
-   
-}
-
-div.box {
-    background-color: slategray;
-    position: relative;
-    width: relative;
-    margin: 3%;
-    margin-top: 0%;
-    padding: 5px;
-}
+.about{display:flex;
+    justify-content: center;
+    color: red;
+    }

@@ -1,40 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Group 16</title>
-    
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="styles.css">
-    
 
-</head>
-<body>
-    <h1>16</h1>
-    <div class="block">
-    
-        <div class = "box">
-          <h2>Studio Table Info</h2>
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr>
-                <th>
-                  Studio ID
-                </th>
-                <th>
-                  Studio Name
-                </th>
-              </tr>
-            </thead>
-            <tbody class="target"></tbody>
-          </table>
-        </div>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div>
+      <h2 class="level-left">
+        <a href="about.html" title="aboutpage" class="about">About Page </a>
+      </h2>
     </div>
+
+    <div>
+      <h5 class="based_on_text">Category:</h5>
+      <div class="based_on_text">
+        <span>Movies</span> <input id="movies" type="checkbox" checked="" />
+
+        <span>TV Shows</span> <input id="tv" type="checkbox" checked="" />
+      </div>
+
+      <div>
+        <h5 class="based_on_text">Genre:</h5>
+        <div class="based_on_text">
+          <span>Action</span>
+          <input id="action" type="checkbox" checked="" />
+
+          <span>Family</span>
+          <input id="family" type="checkbox" checked="" />
+
+          <span>Thriller</span>
+          <input id="thriller" type="checkbox" checked="" />
+
+          <span>Drama</span> <input id="drama" type="checkbox" checked="" />
+
+          <span>Horror</span>
+          <input id="horror" type="checkbox" checked="" />
+
+          <span>Comedy</span>
+          <input id="comedy" type="checkbox" checked="" />
+
+          <span>Sci-Fi</span>
+          <input id="sci-fi" type="checkbox" checked="" />
+
+          <span>Documentary</span>
+          <input id="documentary" type="checkbox" checked="" />
+        </div>
+      </div>
+
+      <div>
+        <h5 class="based_on_text">Rating:</h5>
+        <div class="based_on_text">
+          <span>1</span>
+          <input id="1 star" type="checkbox" checked="" />
+
+          <span>2</span>
+          <input id="2 stars" type="checkbox" checked="" />
+
+          <span>3</span> <input id="3 stars" type="checkbox" checked="" />
+
+          <span>4</span> <input id="4 stars" type="checkbox" checked="" />
+
+          <span>5</span> <input id="5 stars" type="checkbox" checked="" />
+        </div>
+      </div>
+
+      <div>
+        <h5 class="based_on_text">Duration:</h5>
+        <div class="based_on_text">
+          <span>Short (30 to 45 min)</span>
+          <input id="short" type="checkbox" checked="" />
+
+          <span>Medium (45 to 90 min)</span>
+          <input id="medium" type="checkbox" checked="" />
+
+          <span>Long (90 min +)</span>
+          <input id="long" type="checkbox" checked="" />
+        </div>
+      </div>
+
+      <div><button class="button is-info">Submit</button></div>
+
+      <div class="box">
+        <h2>Search Results</h2>
+        <table
+          class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+        >
+          <thead>
+            <tr>
+              <th>TITLE</th>
+              <th>YEAR</th>
+              <th>DURATION</th>
+              <th>RATING</th>
+              <th>GENRE</th>
+            </tr>
+          </thead>
+          <tbody class="target"></tbody>
+        </table>
+      </div>
+    </div>
+
     <script src="./script.js" charset="utf-8"></script>
-</body>
+  </body>
 </html>
