@@ -7,11 +7,16 @@ body, html{
     color: black;
 }
 
+
 .container {
     font-size: larger;
 }
 
-.based_on_text{
+.about{
+    font-size: x-large;
+}
+
+.based_on_text .about{
     text-align: center;
 }
 
