@@ -13,14 +13,38 @@
   </head>
   <body>
 
-    <a href="index.html" title="homepage" class="button is-info is-light">Home</a>
-    
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item">
+          <img src="FilmReel-512.webp">
+        </a>
+        <div class="navbar-burger burger" id="burger" data-target="navbarOptions" aria-label="menu" aria-expanded="false" 
+        onclick="toggleBurger()">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </div>
+      </div>
 
+      <div id="navbarOptions" class="navbar-menu">
+        <div class="navbar-start">
+          <a href="index.html" title="homepage" class="navbar-item">
+            Home
+          </a>
+    
+          <a href="about.html" title="aboutpage" class="navbar-item">
+            About
+          </a>
+        </div>
+      </div>
+    </nav>
+    
+  </br>
  
     <div class="content">
     <h1>About Page</h1>
   </div>
-
+  <div class="container is-fluid">
   <div class = "content notification is-warning is-light about">
     <p>
       We strive to help people both young and old who may not know what movies or
@@ -36,5 +60,7 @@
       just because they do not know what movie or tv show to watch.
     </p>
   </div>
+</div>
+  <script src="./script.js" charset="utf-8"></script>
   </body>
 </html>

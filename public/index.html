@@ -9,18 +9,46 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
     />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div>
-        <a href="about.html" title="aboutpage" class="button is-info is-light">About Page </a>
+
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item">
+          <img src="FilmReel-512.webp">
+        </a>
+        <div class="navbar-burger burger" id="burger" data-target="navbarOptions" aria-label="menu" aria-expanded="false" 
+        onclick="toggleBurger()">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </div>
       </div>
-      </br>
-         <div class="content"><h1>The Vault</h1></div>
+
+      <div id="navbarOptions" class="navbar-menu">
+        <div class="navbar-start">
+          <a href="index.html" title="homepage" class="navbar-item">
+            Home
+          </a>
+    
+          <a href="about.html" title="aboutpage" class="navbar-item">
+            About
+          </a>
+        </div>
+      </div>
+    </nav>
+
     </br>
+     
+      <div class="content"><h1>The Vault</h1></div>
+
+    </br>
+
     <div>
-      <div class="container">
+      <div class="container is-fluid">
         <div class="notification is-warning is-light">
           <h5 class="based_on_text"><strong>Category:</strong></h5>
           <div class="based_on_text">
@@ -30,10 +58,12 @@
           </div>
         </div>
       </div>
+
     </br>
-      <div class="container">
-        <div class="notification is-info is-light">
-          <div>
+      
+    <div class="container is-fluid">  
+      <div class="notification is-info is-light">
+        <div>
             <h5 class="based_on_text"><strong>Genre:</strong></h5>
             <div class="based_on_text">
               <span>Action</span>
@@ -64,7 +94,7 @@
       </div>
     </br>
 
-      <div class="container">
+      <div class="container is-fluid">
         <div class="notification is-warning is-light">
           <div>
             <h5 class="based_on_text"><strong>Rating:</strong></h5>
@@ -86,7 +116,7 @@
       </div>
       
     </br>
-      <div class="container">
+      <div class="container is-fluid">
         <div class="notification is-info is-light">
           <div>
             <h5 class="based_on_text"><strong>Duration:</strong></h5>
@@ -107,6 +137,7 @@
 
       <div class="submit"><button class="button is-info">Submit</button></div>
   </br>
+  <div class="container is-fluid">
       <div class="box">
         <h2>Search Results</h2>
         <table
@@ -125,7 +156,9 @@
         </table>
       </div>
     </div>
-
+  </div>
+  
     <script src="./script.js" charset="utf-8"></script>
+  
   </body>
 </html>
