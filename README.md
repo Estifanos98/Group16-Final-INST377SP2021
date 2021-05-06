@@ -1,7 +1,3 @@
-### How to use Markdown
-Markdown is a text notation system used in Discord, Whatsapp and similar to structure pages without writing HTML at all. You'll be using it for your documentation.
-* [Markdown guide](https://www.markdownguide.org/cheat-sheet/)
-
 # The Vault
 ## Description
 Those stuck in COVID may be bored of seeing the same old movies and wonder what movies are currently out there. To address this issue of not knowing what movies exist or to see if there are new movies available, we provide a easy to use resource available to everyone. Our information comes from IMDb from among some of the more popular movies from 2018-2020. 
@@ -14,7 +10,7 @@ iPhone 6/7/8 Plus
 Macbook Pro 13/15
 
 ### Links
-Developer Manual
+[Developer Manual](https://github.com/Estifanos98/Group16-Final-INST377SP2021#developer-manual)
 
 ## Developer Manual
 ### How to install application and all dependencies
