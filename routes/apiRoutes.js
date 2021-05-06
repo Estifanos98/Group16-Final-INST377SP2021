@@ -11,63 +11,23 @@ router.get('/', (req, res) => {
   res.send('Welcome to Group 16 API!');
 });
 
-/// /////////////////////////////////
-/// ////Dining Hall Endpoints////////
-/// /////////////////////////////////
-router.get('/dining', async (req, res) => {
-  try {
-    const halls = await db.DiningHall.findAll();
-    const reply = halls.length > 0 ? { data: halls } : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
 
-// endpointtv copy
+/// /////////////////////////////////
+/// ///////TV Movie Endpoint///////
+/// /////////////////////////////////
+
 router.get('/tv_movie', async (req, res) => {
   try {
     const tv = await db.tv_movie.findAll();
     const reply = tv.length > 0 ? { data: tv} : { message: 'no results found' };
     res.json(reply);
+    res.send('Got a GET request from /api/tv_movie');
   } catch (err) {
     console.error(err);
     res.error('Server error');
   }
 });
 
-// endpointtv copy end
-
-// endpoint1 copy
-router.get('/studio', async (req, res) => {
-  try {
-    const studio1 = await db.studio.findAll();
-    const reply = studio1.length > 0 ? { data: studio1 } : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-// endpoint1 copy end
-
-router.get('/dining/:hall_id', async (req, res) => {
-  try {
-    const hall = await db.DiningHall.findAll({
-      where: {
-        hall_id: req.params.hall_id
-      }
-    });
-
-    res.json(hall);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-// enpointtv2 copy
 router.get('/tv_movie/:catalogue_id', async (req, res) => {
   try {
     const tvm = await db.tv_movie.findAll({
@@ -77,83 +37,7 @@ router.get('/tv_movie/:catalogue_id', async (req, res) => {
     });
 
     res.json(tvm);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-// endpointv2 copy end
-
-// endpoint2 copy
-
-router.get('/studio/:studio_id', async (req, res) => {
-  try {
-    const studio3 = await db.studio.findAll({
-      where: {
-        studio_id: req.params.studio_id
-      }
-    });
-
-    res.json(studio3);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-// endpoint2 copy end
-
-router.post('/dining', async (req, res) => {
-  const halls = await db.DiningHall.findAll();
-  const currentId = (await halls.length) + 1;
-  try {
-    const newDining = await db.DiningHall.create({
-      hall_id: currentId,
-      hall_name: req.body.hall_name,
-      hall_address: req.body.hall_address,
-      hall_lat: req.body.hall_lat,
-      hall_long: req.body.hall_long
-    });
-    res.json(newDining);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-// endpoint3 copy
-
-// endpoint3 copy end
-
-router.delete('/dining/:hall_id', async (req, res) => {
-  try {
-    await db.DiningHall.destroy({
-      where: {
-        hall_id: req.params.hall_id
-      }
-    });
-    res.send('Successfully Deleted');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/dining', async (req, res) => {
-  try {
-    await db.DiningHall.update(
-      {
-        hall_name: req.body.hall_name,
-        hall_location: req.body.hall_location
-      },
-      {
-        where: {
-          hall_id: req.body.hall_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
+    res.send('Got a GET request from /api/tv_movie');
   } catch (err) {
     console.error(err);
     res.error('Server error');
@@ -161,267 +45,38 @@ router.put('/dining', async (req, res) => {
 });
 
 /// /////////////////////////////////
-/// ////////Meals Endpoints//////////
+/// ///////Custom SQL Endpoint///////
 /// /////////////////////////////////
-router.get('/meals', async (req, res) => {
-  try {
-    const meals = await db.Meals.findAll();
-    res.json(meals);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
 
-router.get('/meals/:meal_id', async (req, res) => {
-  try {
-    const meals = await db.Meals.findAll({
-      where: {
-        meal_id: req.params.meal_id
-      }
-    });
-    res.json(meals);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
+const movieQuery = `SELECT DISTINCT title, 
+  year, duration, avg_star_rating, genre_name 
+FROM tv_movie t
+  JOIN categories 
+  JOIN categories c ON t.category_id = c.catalogue_id
+  JOIN genre g ON c.genre_id = g.genre_id
+  WHERE episodes IS NULL`;
+  router.get('/custom_movies', async (req, res) => {
+    try {
+      const result = await db.sequelizeDB.query(movieQuery, {
+        type: sequelize.QueryTypes.SELECT
+      });
+      res.json(result);
+      res.send('Got a GET request from /api/custom_movies');
+    } catch (err) {
+      console.error(err);
+      res.error('Server error');
+    }
+  });
 
-router.put('/meals', async (req, res) => {
-  try {
-    await db.Meals.update(
-      {
-        meal_name: req.body.meal_name,
-        meal_category: req.body.meal_category
-      },
-      {
-        where: {
-          meal_id: req.body.meal_id
-        }
-      }
-    );
-    res.send('Meal Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// /////////////////////////////////
-/// ////////Macros Endpoints/////////
-/// /////////////////////////////////
-router.get('/macros', async (req, res) => {
-  try {
-    const macros = await db.Macros.findAll();
-    res.send(macros);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/macros/:meal_id', async (req, res) => {
-  try {
-    const meals = await db.Macros.findAll({
-      where: {
-        meal_id: req.params.meal_id
-      }
-    });
-    res.json(meals);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/macros', async (req, res) => {
-  try {
-    // N.B. - this is a good example of where to use code validation to confirm objects
-    await db.Macros.update(
-      {
-        meal_name: req.body.meal_name,
-        meal_category: req.body.meal_category,
-        calories: req.body.calories,
-        serving_size: req.body.serving_size,
-        cholesterol: req.body.cholesterol,
-        sodium: req.body.sodium,
-        carbs: req.body.carbs,
-        protein: req.body.protein,
-        fat: req.body.fat
-      },
-      {
-        where: {
-          meal_id: req.body.meal_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// /////////////////////////////////
-/// Dietary Restrictions Endpoints///
-/// /////////////////////////////////
-router.get('/restrictions', async (req, res) => {
-  try {
-    const restrictions = await db.DietaryRestrictions.findAll();
-    res.json(restrictions);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/restrictions/:restriction_id', async (req, res) => {
-  try {
-    const restrictions = await db.DietaryRestrictions.findAll({
-      where: {
-        restriction_id: req.params.restriction_id
-      }
-    });
-    res.json(restrictions);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// //////////////////////////////////
-/// ///////Custom SQL Endpoint////////
-/// /////////////////////////////////
-const yearCustom = 'SELECT * FROM `tv_movie` WHERE `year` > 2000 AND `year` < 2005';
-router.get('/table/data', async (req, res) => {
-  try {
-    const result = await db.sequelizeDB.query(yearCustom, {
-      type: sequelize.QueryTypes.SELECT
-    });
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-const movieCustom = `SELECT title,
-  year,
-  rating_id AS rating,
-  studio_name,
-  genre_name
-FROM tv_movie
-  JOIN studio USING(studio_id)
-  JOIN categories USING(catalogue_id)
-  JOIN genre USING(genre_id)`;
-router.get('/map/data', async (req, res) => {
-  try {
-    const result = await db.sequelizeDB.query(movieCustom, {
-      type: sequelize.QueryTypes.SELECT
-    });
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-router.get('/custom', async (req, res) => {
-  try {
-    const result = await db.sequelizeDB.query(req.body.query, {
-      type: sequelize.QueryTypes.SELECT
-    });
-    res.json(result);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// /////////////////////////////////
-/// ////Approved Audience Endpoints//
-/// /////////////////////////////////
-router.get('/approved_audience', async (req, res) => {
-  try {
-    const audience = await db.approved_audience.findAll();
-    const reply = audience.length > 0 ? { data: audience } : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/approved_audience/:rating_id', async (req, res) => {
-  try {
-    const rating = await db.approved_audience.findAll({
-      where: {
-        rating_id: req.params.rating_id
-      }
-    });
-
-    res.json(rating);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.post('/approved_audience', async (req, res) => {
-  const audience = await db.approved_audience.findAll();
-  const ratingId = (await audience.length) + 1;
-  try {
-    const newAudience = await db.approved_audience.create({
-      rating_id: ratingId,
-      rating_description: req.body.rating_description
-    });
-    res.json(newAudience);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.delete('/approved_audience/:rating_id', async (req, res) => {
-  try {
-    await db.approved_audience.destroy({
-      where: {
-        rating_id: req.params.rating_id
-      }
-    });
-    res.send('Successfully Deleted');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/approved_audience', async (req, res) => {
-  try {
-    await db.approved_audience.update(
-      {
-        rating_description: req.body.rating_description
-      },
-      {
-        where: {
-          rating_id: req.body.rating_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
 
 /// /////////////////////////////////
 /// ////Categories Endpoints/////////
 /// /////////////////////////////////
 router.get('/categories', async (req, res) => {
   try {
-    const category = await db.categories.findAll();
-    const reply = category.length > 0 ? { data: category } : { message: 'no results found' };
-    res.json(reply);
+    const categories = await db.categories.findAll();
+    res.json(categories);
+    res.send('Got a GET request from /api/categories');
   } catch (err) {
     console.error(err);
     res.error('Server error');
@@ -430,13 +85,14 @@ router.get('/categories', async (req, res) => {
 
 router.get('/categories/:catalogue_id', async (req, res) => {
   try {
-    const category = await db.catagories.findAll({
+    const categories = await db.catagories.findAll({
       where: {
         catalogue_id: req.params.catalogue_id
       }
     });
 
-    res.json(category);
+    res.json(categories);
+    res.send('Got a GET request from /api/categories');
   } catch (err) {
     console.error(err);
     res.error('Server error');
@@ -444,8 +100,8 @@ router.get('/categories/:catalogue_id', async (req, res) => {
 });
 
 router.post('/categories', async (req, res) => {
-  const category = await db.categories.findAll();
-  const catalogueId = (await category.length) + 1;
+  const categories = await db.categories.findAll();
+  const catalogueId = (await categories.length) + 1;
   try {
     const newCategory = await db.categories.create({
       catalogue_id: catalogueId,
@@ -474,7 +130,7 @@ router.delete('/categories/:catalogue_id', async (req, res) => {
 
 router.put('/categories', async (req, res) => {
   try {
-    await db.approved_audience.update(
+    await db.categories.update(
       {
         genre_id: req.body.genre_id
       },
@@ -491,102 +147,9 @@ router.put('/categories', async (req, res) => {
   }
 });
 
-/// /////////////////////////////////
-/// //// Customer Endpoints//
-/// /////////////////////////////////
-
-router.get('/customer', async (req, res) => {
-  try {
-    const customer = await db.approved_audience.findAll();
-    const reply = customer.length > 0 ? { data: customer} : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/customer/:customer_id', async (req, res) => {
-  try {
-    const customers = await db.customer.findAll({
-      where: {
-        rating_id: req.params.customer_id
-      }
-    });
-
-    res.json(customers);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.post('/customer', async (req, res) => {
-  const customers = await db.customer.findAll();
-  const customerId = (await customers.length) + 1;
-  try {
-    const newCustomer = await db.customer.create({
-      customer_id: customerId,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      customer_address: req.body.customer_address,
-      customer_city: req.body.customer_city,
-      customer_state: req.body.customer_state,
-      customer_zip: req.body.customer_zip,
-      customer_age: req.body.customer_age,
-      credit_card_num: req.body.credit_card_num,
-      customer_email: req.body.customer_email
-    });
-    res.json(newCustomer);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.delete('/customer/:customer_id', async (req, res) => {
-  try {
-    await db.customer.destroy({
-      where: {
-        customer_id: req.params.customer_id
-      }
-    });
-    res.send('Successfully Deleted');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/customer', async (req, res) => {
-  try {
-    await db.customer.update(
-      {
-        first_name: req.body.first_name,
-        last_name: req.body.last_name,
-        customer_address: req.body.customer_address,
-        customer_city: req.body.customer_city,
-        customer_state: req.body.customer_state,
-        customer_zip: req.body.customer_zip,
-        customer_age: req.body.customer_age,
-        credit_card_num: req.body.credit_card_num,
-        customer_email: req.body.customer_email
-      },
-      {
-        where: {
-          customer_id: req.body.customer_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
 
 /// /////////////////////////////////
-/// //// Genre Endpoints//
+/// //// Genre Endpoints/////////////
 /// /////////////////////////////////
 
 router.get('/genre', async (req, res) => {
@@ -594,6 +157,7 @@ router.get('/genre', async (req, res) => {
     const genre = await db.genre.findAll();
     const reply = genre.length > 0 ? { data: genre} : { message: 'no results found' };
     res.json(reply);
+    res.send('Got a GET request from /api/genre');
   } catch (err) {
     console.error(err);
     res.error('Server error');
@@ -607,16 +171,17 @@ router.get('/genre/:genre_id', async (req, res) => {
         rating_id: req.params.genre_id
       }
     });
-
     res.json(genres);
+    res.send('Got a GET request from /api/genre');
   } catch (err) {
     console.error(err);
     res.error('Server error');
   }
 });
+
 router.post('/genre', async (req, res) => {
-  const genres_ = await db.genre.findAll();
-  const genreId = (await genres_.length) + 1;
+  const genres = await db.genre.findAll();
+  const genreId = (await genres.length) + 1;
   try {
     const newGenre = await db.genre.create({
       genre_id: genreId,
@@ -652,172 +217,6 @@ router.put('/genre', async (req, res) => {
       {
         where: {
           genre_id: req.body.genre_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// /////////////////////////////////
-/// ////Invoices Endpoints//
-/// /////////////////////////////////
-router.get('/invoices', async (req, res) => {
-  try {
-    const invoice = await db.invoices.findAll();
-    const reply = invoice.length > 0 ? { data: invoice } : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/invoices/:invoice_id', async (req, res) => {
-  try {
-    const inv = await db.invoices.findAll({
-      where: {
-        invoice_id: req.params.invoice_id
-      }
-    });
-
-    res.json(inv);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.post('/invoices', async (req, res) => {
-  const newInv = await db.invoices.findAll();
-  const invoiceId = (await newInv.length) + 1;
-  try {
-    const newInvoice = await db.invoices.create({
-      invoice_id: invoiceId,
-      customer_id: req.body.customer_id,
-      credit_total: req.body.credit_total,
-      invoice_date: req.body.invoice_date,
-      invoice_total: req.body.invoice_total
-    });
-    res.json(newInvoice);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.delete('/invoices/:invoice_id', async (req, res) => {
-  try {
-    await db.invoices.destroy({
-      where: {
-        invoice_id: req.params.invoice_id
-      }
-    });
-    res.send('Successfully Deleted');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/invoices', async (req, res) => {
-  try {
-    await db.invoices.update(
-      {
-        customer_id: req.body.customer_id,
-        credit_total: req.body.credit_total,
-        invoice_date: req.body.invoice_date,
-        invoice_total: req.body.invoice_total
-      },
-      {
-        where: {
-          invoice_id: req.body.invoice_id
-        }
-      }
-    );
-    res.send('Successfully Updated');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-/// /////////////////////////////////
-/// ////Rental_info Endpoints//
-/// /////////////////////////////////
-router.get('/rental_info', async (req, res) => {
-  try {
-    const rental = await db.rental_info.findAll();
-    const reply = rental.length > 0 ? { data: rental } : { message: 'no results found' };
-    res.json(reply);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.get('/rental_info/:confirmation_num', async (req, res) => {
-  try {
-    const info = await db.rental_info.findAll({
-      where: {
-        confirmation_num: req.params.confirmation_num
-      }
-    });
-
-    res.json(info);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.post('/rental_info', async (req, res) => {
-  const newRental = await db.rental_info.findAll();
-  const RentalId = (await newRental.length) + 1;
-  try {
-    const newRent = await db.invoices.create({
-      confirmation_num: RentalId,
-      invoice_id: req.body.invoice_id,
-      catalogue_id: req.body.catalogue_id,
-      purchase_type: req.body.purchase_type,
-      purchase_date: req.body.purchase_date
-    });
-    res.json(newRent);
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.delete('/rental_info/:confirmation_num', async (req, res) => {
-  try {
-    await db.invoices.destroy({
-      where: {
-        confirmation_num: req.params.confirmation_num
-      }
-    });
-    res.send('Successfully Deleted');
-  } catch (err) {
-    console.error(err);
-    res.error('Server error');
-  }
-});
-
-router.put('/rental_info', async (req, res) => {
-  try {
-    await db.rental_info.update(
-      {
-        invoice_id: req.body.invoice_id,
-        catalogue_id: req.body.catalogue_id,
-        purchase_type: req.body.purchase_type,
-        purchase_date: req.body.purchase_date
-      },
-      {
-        where: {
-          confirmation_num: req.body.confirmation_num
         }
       }
     );

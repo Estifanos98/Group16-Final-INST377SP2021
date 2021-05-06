@@ -6,7 +6,7 @@ export default (database, DataTypes) => {
         catalogue_id: {
           type: DataTypes.INTEGER,
           allowNull: false,
-          primaryKey: false
+          primaryKey: true
         },
         genre_id: {
           type: DataTypes.INTEGER

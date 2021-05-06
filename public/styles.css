@@ -1,8 +1,31 @@
-body, html{
+body{
     font: normal 18px/1.5;
     font-family: 'Raleway', sans-serif;
-    background:lightskyblue;
+    background: linear-gradient(0deg, #5eaaa8 0%, #f7f3e9 100%);
     color: black;
+}
+
+#left{
+    width: 25%;
+  }
+  .select:not(.is-multiple):not(.is-loading)::after {
+    border-color: #a3d2ca;
+    position: relative;
+    border: none;
+  }
+  button, input, select, textarea {
+    margin: 10px;
+  }
+  .select select {
+   min-width: 250px;
+}
+
+.navbar {
+    background-color: #F05945;
+}
+
+.notification {
+    background-color: #a3d2ca;
 }
 
 .container {
@@ -23,13 +46,13 @@ body, html{
 
 .about{display:flex;
     justify-content: center;
-    color: red;
     }
 
 .content{
     text-align: center;
 }
 
-.submit {
+.text {
     text-align: center;
 }
+
